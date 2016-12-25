@@ -25,12 +25,9 @@ module.exports = [{
             loader: 'url'
         }, {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            loader: 'style!css'
         }]
-    },
-    plugins: [
-        new ExtractTextPlugin("styles.css")
-    ]
+    }
 }, {
     name: 'ssr',
     context: path.join(__dirname, 'src'),
@@ -52,11 +49,11 @@ module.exports = [{
                 presets: ['es2015', 'react']
             }
         }, {
-            test: /\.css$/,
-            loaders: ['isomorphic-style', 'css']
-        }, {
             test: /\.svg$/,
             loader: 'url'
+        }, {
+            test: /\.css$/,
+            loaders: ['isomorphic-style', 'css']
         }]
     }
 }];

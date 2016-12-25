@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './App';
-import styles from '../public/js/styles.css'
+import styles from './App.css'
 
 function renderFullPage(renderedContent) {
     return `
