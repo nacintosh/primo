@@ -1,6 +1,6 @@
 var path = require('path');
-
 var assetsPath = path.join(__dirname, 'public', 'js');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = [{
     name: 'index',
@@ -21,13 +21,16 @@ module.exports = [{
                 presets: ['es2015', 'react']
             }
         }, {
-            test: /\.css$/,
-            loaders: ['style', 'css']
-        }, {
             test: /\.svg$/,
             loader: 'url'
+        }, {
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
         }]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin("styles.css")
+    ]
 }, {
     name: 'ssr',
     context: path.join(__dirname, 'src'),

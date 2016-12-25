@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './App';
+import styles from '../public/js/styles.css'
 
 function renderFullPage(renderedContent) {
     return `
@@ -9,11 +10,11 @@ function renderFullPage(renderedContent) {
             <head>
                 <title>Primo</title>
                 <meta charset="UTF-8" />
-                <style> body { margin: 0; } </style>
+                <style>${styles._getCss()}</style>
             </head>
             <body>
                 <div id="root">${renderedContent}</div>
-                <script type="text/javascript" src="bundle.js" charset="utf-8"></script>
+                <script type="text/javascript" src="js/bundle.js" charset="utf-8"></script>
             </body>
         </html>
     `;
