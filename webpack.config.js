@@ -28,4 +28,32 @@ module.exports = [{
             loader: 'url'
         }]
     }
+}, {
+    name: 'ssr',
+    context: path.join(__dirname, 'src'),
+    entry: './ssr.js',
+    target: 'node',
+    output: {
+        path: assetsPath,
+        filename: 'ssr.js',
+        publicPath: 'public',
+        libraryTarget: 'commonjs2'
+    },
+    module: {
+        loaders: [{
+            test: /\.js$|\.jsx$/,
+            loader: 'babel-loader',
+            exclude: /node_modules/,
+            include: path.join(__dirname, 'src'),
+            query: {
+                presets: ['es2015', 'react']
+            }
+        }, {
+            test: /\.css$/,
+            loaders: ['isomorphic-style', 'css']
+        }, {
+            test: /\.svg$/,
+            loader: 'url'
+        }]
+    }
 }];
