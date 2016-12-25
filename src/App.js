@@ -19,7 +19,7 @@ class App extends Component {
                 autoplay: 1
             }
         };
-        const src = 'http://www.youtube.com/embed/' + this.state.value;
+        const src = 'http://www.youtube.com/embed/' + this.state.value + '?autoplay=1';
 
         return (
             <div className="App">
@@ -28,7 +28,7 @@ class App extends Component {
                 <h2>Welcome to Primo</h2>
               </div>
               <p className="App-intro"></p>
-              <iframe id="player" type="text/html" width="640" height="360" src={src} />
+              <iframe id="player" type="text/html" width="640" height="390" src={src} frameborder="0"/>
             </div>
         );
     }
