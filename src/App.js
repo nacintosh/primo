@@ -19,7 +19,7 @@ class App extends Component {
                 autoplay: 1
             }
         };
-        const src = 'http://www.youtube.com/embed/' + this.state.value + '?autoplay=1';
+        const src = 'https://www.youtube.com/embed/' + this.state.value + '?autoplay=1';
 
         return (
             <div className="App">

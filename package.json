@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress --color --display-error-details",
-    "start": "webpack-dev-server --progress --color",
+    "prestart": "npm run build",
+    "start": "node ./server.js",
     "ssr": "node server.js",
     "lint": "eslint --ignore-pattern public/js ."
   },
-  "devDependencies": {
+  "dependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
@@ -18,17 +19,16 @@
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
     "eslint-plugin-react": "^6.8.0",
+    "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "isomorphic-style-loader": "^1.1.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "react-youtube": "^7.3.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
-  },
-  "dependencies": {
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1"
   }
 }
