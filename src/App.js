@@ -6,7 +6,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '3ad4NsEy1tg'
+            videos: props.videos
         };
     }
 
@@ -18,7 +18,7 @@ class App extends Component {
                 autoplay: 1
             }
         };
-        const src = 'https://www.youtube.com/embed/' + this.state.value + '?autoplay=1';
+        const src = 'https://www.youtube.com/embed/' + this.state.videos[1].VideoID + '?autoplay=1';
 
         return (
             <div className="App">
@@ -37,5 +37,11 @@ class App extends Component {
         event.target.playVideo();
     }
 }
+
+App.propTypes = {
+  videos: React.PropTypes.array.isRequired
+};
+
+App.defaultProps = {videos: []};
 
 export default App;

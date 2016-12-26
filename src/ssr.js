@@ -23,9 +23,8 @@ function renderFullPage(renderedContent) {
 }
 
 export default function render(req, res, entities) {
-    console.log(entities);
     const renderedContent = renderToString( <
-        App / >
+        App videos={entities}/>
     );
     const renderedPage = renderFullPage(renderedContent);
     res.status(200).send(renderedPage);
