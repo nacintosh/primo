@@ -11,6 +11,7 @@
     "lint": "eslint --ignore-pattern public/js ."
   },
   "dependencies": {
+    "@google-cloud/datastore": "^0.6.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
@@ -25,7 +26,6 @@
     "isomorphic-style-loader": "^1.1.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-youtube": "^7.3.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3",

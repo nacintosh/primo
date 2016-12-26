@@ -1,5 +1,7 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import {
+    renderToString
+} from 'react-dom/server';
 import App from './App';
 import styles from './App.css'
 
@@ -20,9 +22,10 @@ function renderFullPage(renderedContent) {
     `;
 }
 
-export default function render(req, res) {
-    const renderedContent = renderToString(
-      <App />
+export default function render(req, res, entities) {
+    console.log(entities);
+    const renderedContent = renderToString( <
+        App / >
     );
     const renderedPage = renderFullPage(renderedContent);
     res.status(200).send(renderedPage);
