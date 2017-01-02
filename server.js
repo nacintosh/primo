@@ -1,11 +1,14 @@
-global.navigator = {
-    userAgent: 'all'
-};
-
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
 const path = require('path');
+
+const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
 const ssr = require('./public/js/ssr');
 const Datastore = require('@google-cloud/datastore');
 const datastore = Datastore({
@@ -23,6 +26,24 @@ app.get('/', function(req, res, next) {
 app.get('/js/bundle.js', function(req, res, next) {
     res.setHeader('content-type', 'application/javascript');
     res.sendFile('./public/js/bundle.js');
+});
+
+app.post('/register', function(req, res, next) {
+    const taskKey = datastore.key(['YouTube']);
+
+    // Prepares the new entity
+    const task = {
+        key: taskKey,
+        data: {
+            VideoID: req.body.VideoID
+        }
+    };
+
+    datastore.save(task)
+        .then(() => {
+            console.log(`Saved ${task.data.VideoID}`);
+            res.send(task);
+        });
 });
 
 const PORT = process.env.PORT || 8080;

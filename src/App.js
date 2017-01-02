@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,6 +10,7 @@ class App extends Component {
             index: 0
         };
         this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
+        this.onChangeText = this.onChangeText.bind(this);
     }
 
     render() {
@@ -21,9 +23,26 @@ class App extends Component {
               </div>
               <p className="App-intro"></p>
               <iframe id="player" type="text/html" width="640" height="390" src={src} frameBorder="0"/>
+              <br/>
+              <input type="text" ref="inputText" defaultValue="url" />
+              <button onClick={this.onChangeText}>VideoID</button>
             </div>
         );
     }
+
+    onChangeText(e) {
+        const id = ReactDOM.findDOMNode(this.refs.inputText).value.trim();
+        fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            VideoID: `${id}`
+          })
+        });
+    };
 
     componentDidMount() {
         window.addEventListener("keydown", this.handleOnKeyDown);
