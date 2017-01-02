@@ -6,35 +6,67 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            videos: props.videos
+            index: 0
         };
+        this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
     }
 
     render() {
-        const opts = {
-            height: '390',
-            width: '640',
-            playerVars: { // https://developers.google.com/youtube/player_parameters
-                autoplay: 1
-            }
-        };
-        const src = 'https://www.youtube.com/embed/' + this.state.videos[1].VideoID + '?autoplay=1';
-
+        const src = 'https://www.youtube.com/embed/' + this.props.videos[this.state.index].VideoID + '?autoplay=1';
         return (
-            <div className="App">
+            <div className="App" onKeyDown={this.handleOnKeyDown}>
               <div className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
+                <img src={logo} className="App-logo" alt="logo"/>
                 <h2>Welcome to Primo</h2>
               </div>
               <p className="App-intro"></p>
-              <iframe id="player" type="text/html" width="640" height="390" src={src} frameborder="0"/>
+              <iframe id="player" type="text/html" width="640" height="390" src={src} frameBorder="0"/>
             </div>
         );
     }
 
-    _onReady(event) {
-        // access to player in all event handlers via event.target
-        event.target.playVideo();
+    componentDidMount() {
+        window.addEventListener("keydown", this.handleOnKeyDown);
+    };
+
+    componentWillUnmount() {
+        window.removeEventListener("keydown", this.handleOnKeyDown);
+    };
+
+    handleOnKeyDown(event) {
+        switch (event.key) {
+            case 'ArrowRight':
+                this.next();
+                break;
+            case 'ArrowLeft':
+                this.prev();
+                break;
+            default:
+                break;
+        }
+    }
+
+    next() {
+        console.log(this.props.videos.length);
+        if (this.state.index + 1 >= this.props.videos.length) {
+            this.setState({index: 0});
+            return;
+        }
+        this.setState((prevState) => {
+            return {indexr: prevState.index++};
+        });
+        return;
+    }
+
+    prev() {
+        if (this.state.index - 1 < 0) {
+            this.setState({index: this.props.videos.length - 1});
+            return;
+        }
+        this.setState((prevState) => {
+            return {indexr: prevState.index--};
+        });
+        return;
     }
 }
 
