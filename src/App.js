@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
+import YouTube from './components/YouTube'
 
 class App extends Component {
     constructor(props) {
@@ -11,24 +12,21 @@ class App extends Component {
         };
         this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
-    }
+    };
 
     render() {
-        const src = 'https://www.youtube.com/embed/' + this.props.videos[this.state.index].VideoID + '?autoplay=1';
         return (
-            <div className="App" onKeyDown={this.handleOnKeyDown}>
-              <div className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
+            <div className='App'>
+              <div className='App-header'>
+                <img src={logo} className='App-logo' alt='logo'/>
                 <h2>Welcome to Primo</h2>
               </div>
-              <p className="App-intro"></p>
-              <iframe id="player" type="text/html" width="640" height="390" src={src} frameBorder="0"/>
-              <br/>
-              <input type="text" ref="inputText" defaultValue="Please add a VideoID" />
+              <input type='text' ref='inputText' defaultValue='Please add a VideoID' />
               <button onClick={this.onChangeText}>add</button>
+              <YouTube className="App-youtube" ref='youtube' videoid={this.props.videos[this.state.index].VideoID} />
             </div>
         );
-    }
+    };
 
     onChangeText(e) {
         const id = ReactDOM.findDOMNode(this.refs.inputText).value.trim();
@@ -45,11 +43,11 @@ class App extends Component {
     };
 
     componentDidMount() {
-        window.addEventListener("keydown", this.handleOnKeyDown);
+        window.addEventListener('keydown', this.handleOnKeyDown);
     };
 
     componentWillUnmount() {
-        window.removeEventListener("keydown", this.handleOnKeyDown);
+        window.removeEventListener('keydown', this.handleOnKeyDown);
     };
 
     handleOnKeyDown(event) {
@@ -66,15 +64,14 @@ class App extends Component {
     }
 
     next() {
-        console.log(this.props.videos.length);
         if (this.state.index + 1 >= this.props.videos.length) {
             this.setState({index: 0});
             return;
         }
+
         this.setState((prevState) => {
-            return {indexr: prevState.index++};
+            return {index: prevState.index + 1};
         });
-        return;
     }
 
     prev() {
@@ -82,10 +79,10 @@ class App extends Component {
             this.setState({index: this.props.videos.length - 1});
             return;
         }
+
         this.setState((prevState) => {
-            return {indexr: prevState.index--};
+            return {index: prevState.index - 1};
         });
-        return;
     }
 }
 
