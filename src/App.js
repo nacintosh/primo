@@ -24,8 +24,8 @@ class App extends Component {
               <p className="App-intro"></p>
               <iframe id="player" type="text/html" width="640" height="390" src={src} frameBorder="0"/>
               <br/>
-              <input type="text" ref="inputText" defaultValue="url" />
-              <button onClick={this.onChangeText}>VideoID</button>
+              <input type="text" ref="inputText" defaultValue="Please add a VideoID" />
+              <button onClick={this.onChangeText}>add</button>
             </div>
         );
     }
