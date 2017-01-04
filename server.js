@@ -15,7 +15,10 @@ const datastore = Datastore({
     projectId: 'future-haiku-151414'
 });
 
-const query = datastore.createQuery('YouTube');
+const query = datastore.createQuery('YouTube')
+    .order('created', {
+        descending: true
+    });
 
 app.get('/', function(req, res, next) {
     datastore.runQuery(query, (err, entities) => {
@@ -35,13 +38,14 @@ app.post('/register', function(req, res, next) {
     const task = {
         key: taskKey,
         data: {
-            VideoID: req.body.VideoID
+            videoid: req.body.videoid,
+            created: new Date()
         }
     };
 
     datastore.save(task)
         .then(() => {
-            console.log(`Saved ${task.data.VideoID}`);
+            console.log(`Saved ${task.data.videoid}`);
             res.send(task);
         });
 });

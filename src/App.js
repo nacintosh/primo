@@ -24,7 +24,7 @@ class App extends Component {
               </div>
               <input type='text' ref='inputText' defaultValue='Please add a VideoID' />
               <button onClick={this.onChangeText}>add</button>
-              <YouTube className="App-youtube" ref='youtube' videoid={this.props.videos[this.state.index].VideoID} playlist={this.state.playlist}/>
+              <YouTube className="App-youtube" ref='youtube' videoid={this.props.videos[this.state.index].videoid} playlist={this.state.playlist}/>
             </div>
         );
     };
@@ -38,7 +38,7 @@ class App extends Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            VideoID: `${id}`
+            videoid: `${id}`
           })
         });
     };
@@ -67,36 +67,45 @@ class App extends Component {
     createPlaylist(currentIndex) {
       let playlist = []
       for (let index in this.props.videos) {
-          if (index === currentIndex) {
+          if (parseInt(index) === currentIndex) {
             continue;
           }
-          playlist.push(this.props.videos[index].VideoID);
+          playlist.push(this.props.videos[index].videoid);
       }
       return playlist.join(',');
     }
 
     next() {
         if (this.state.index + 1 >= this.props.videos.length) {
-            this.setState({index: 0});
+            this.setState({
+                index: 0,
+                playlist: this.createPlaylist(0)
+            });
             return;
         }
 
         this.setState((prevState) => {
             return {
-                    index: prevState.index + 1,
-                    playlist: this.createPlaylist(prevState.index + 1)
-                   };
+                index: prevState.index + 1,
+                playlist: this.createPlaylist(prevState.index + 1)
+            };
         });
     }
 
     prev() {
         if (this.state.index - 1 < 0) {
-            this.setState({index: this.props.videos.length - 1});
+            this.setState({
+                index: this.props.videos.length - 1,
+                playlist: this.createPlaylist(this.props.videos.length - 1)
+            });
             return;
         }
 
         this.setState((prevState) => {
-            return {index: prevState.index - 1};
+            return {
+                index: prevState.index - 1,
+                playlist: this.createPlaylist(prevState.index - 1)
+            };
         });
     }
 }
