@@ -8,7 +8,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            index: 0
+            index: 0,
+            playlist: this.createPlaylist(0)
         };
         this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -23,7 +24,7 @@ class App extends Component {
               </div>
               <input type='text' ref='inputText' defaultValue='Please add a VideoID' />
               <button onClick={this.onChangeText}>add</button>
-              <YouTube className="App-youtube" ref='youtube' videoid={this.props.videos[this.state.index].VideoID} />
+              <YouTube className="App-youtube" ref='youtube' videoid={this.props.videos[this.state.index].VideoID} playlist={this.state.playlist}/>
             </div>
         );
     };
@@ -63,6 +64,17 @@ class App extends Component {
         }
     }
 
+    createPlaylist(currentIndex) {
+      let playlist = []
+      for (let index in this.props.videos) {
+          if (index === currentIndex) {
+            continue;
+          }
+          playlist.push(this.props.videos[index].VideoID);
+      }
+      return playlist.join(',');
+    }
+
     next() {
         if (this.state.index + 1 >= this.props.videos.length) {
             this.setState({index: 0});
@@ -70,7 +82,10 @@ class App extends Component {
         }
 
         this.setState((prevState) => {
-            return {index: prevState.index + 1};
+            return {
+                    index: prevState.index + 1,
+                    playlist: this.createPlaylist(prevState.index + 1)
+                   };
         });
     }
 
