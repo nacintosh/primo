@@ -5,6 +5,4 @@ import './index.css';
 
 const appProps = window.APP_PROPS;
 ReactDOM.render(
-  <App videos={appProps}/>,
-  document.getElementById('root')
-);
+    <App videos={appProps}/>, document.getElementById('root'));
