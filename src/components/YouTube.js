@@ -5,13 +5,19 @@ class YouTube extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            playerState: "INIT",
+            title: ""
+        };
 
         this.player;
         this.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady.bind(this);
         this.onPlayerReady = this.onPlayerReady.bind(this);
         this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
+        this.onError = this.onError.bind(this);
         this.onNext = this.onNext.bind(this);
         this.onPrev = this.onPrev.bind(this);
+        this.onToggle = this.onToggle.bind(this);
     }
 
     onYouTubeIframeAPIReady() {
@@ -24,7 +30,8 @@ class YouTube extends React.Component {
             },
             events: {
                 'onReady': this.onPlayerReady,
-                'onStateChange': this.onPlayerStateChange
+                'onStateChange': this.onPlayerStateChange,
+                'onError': this.onError
             }
         });
     }
@@ -36,10 +43,43 @@ class YouTube extends React.Component {
         this.player.setShuffle(true);
     }
 
+    getUrl(player) {
+        const videoid = player.getPlaylist()[player.getPlaylistIndex()];
+        return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&fields=items(snippet(title))&part=snippet"
+    }
+
     onPlayerStateChange(event) {
         if (event.data === YT.PlayerState.CUED) {
             event.target.playVideo();
         }
+
+        switch (event.data) {
+            case YT.PlayerState.ENDED:
+                this.setState({playerState: "ENDED"});
+                break;
+            case YT.PlayerState.PLAYING:
+                this.setState({playerState: "PLAYING"});
+                fetch(this.getUrl(this.player)).then((response) => {
+                    return response.json();
+                }).then((json) => {
+                    this.setState({title: json.items[0]['snippet']['title']
+                    });
+                });
+                break;
+            case YT.PlayerState.PAUSED:
+            case YT.PlayerState.BUFFERING:
+                this.setState({playerState: "PAUSED"});
+                break;
+            case YT.PlayerState.CUED:
+                this.setState({playerState: "CUED"});
+                break;
+            default:
+        }
+    }
+
+    onError(event) {
+        console.log(event);
+        this.onNext();
     }
 
     componentDidMount() {
@@ -60,12 +100,28 @@ class YouTube extends React.Component {
         this.player.previousVideo();
     }
 
+    onToggle() {
+        switch (this.player.getPlayerState()) {
+            case YT.PlayerState.PLAYING:
+                this.player.pauseVideo();
+                break;
+            case YT.PlayerState.PAUSED:
+            case YT.PlayerState.BUFFERING:
+                this.player.playVideo();
+                break;
+            default:
+
+        }
+    }
+
     render() {
         return (
             <div>
                 <div className={this.props.className} ref="player"></div>
                 <button onClick={this.onPrev}>prev</button>
+                <button onClick={this.onToggle}>{this.state.playerState}</button>
                 <button onClick={this.onNext}>next</button>
+                <h2><font color="#ff9933">{this.state.title}</font></h2>
             </div>
         );
     }
