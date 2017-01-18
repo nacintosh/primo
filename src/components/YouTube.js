@@ -7,7 +7,8 @@ class YouTube extends React.Component {
         super(props);
         this.state = {
             playerState: "INIT",
-            title: ""
+            title: "",
+            comment: ""
         };
 
         this.player;
@@ -43,9 +44,14 @@ class YouTube extends React.Component {
         this.player.setShuffle(true);
     }
 
-    getUrl(player) {
+    getUrlForTitle(player) {
         const videoid = player.getPlaylist()[player.getPlaylistIndex()];
         return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&fields=items(snippet(title))&part=snippet"
+    }
+
+    getUrlForComments(player) {
+        const videoid = player.getPlaylist()[player.getPlaylistIndex()];
+        return 'https://www.googleapis.com/youtube/v3/commentThreads?videoId=' + videoid + '&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&textFormat=plainText&part=snippet&maxResults=50&fields=items(snippet(topLevelComment(snippet(textDisplay))))'
     }
 
     onPlayerStateChange(event) {
@@ -59,11 +65,19 @@ class YouTube extends React.Component {
                 break;
             case YT.PlayerState.PLAYING:
                 this.setState({playerState: "PLAYING"});
-                fetch(this.getUrl(this.player)).then((response) => {
+                fetch(this.getUrlForTitle(this.player)).then((response) => {
                     return response.json();
                 }).then((json) => {
                     this.setState({title: json.items[0]['snippet']['title']
                     });
+                });
+                fetch(this.getUrlForComments(this.player)).then((response) => {
+                    return response.json();
+                }).then((json) => {
+                    const comment = json.items.reduce((pre, cur) => {
+                        return pre + cur.snippet.topLevelComment.snippet.textDisplay;
+                    }, '');
+                    this.setState({comment: comment});
                 });
                 break;
             case YT.PlayerState.PAUSED:
@@ -121,7 +135,10 @@ class YouTube extends React.Component {
                 <button onClick={this.onPrev}>prev</button>
                 <button onClick={this.onToggle}>{this.state.playerState}</button>
                 <button onClick={this.onNext}>next</button>
-                <h2><font color="#ff9933">{this.state.title}</font></h2>
+                <h2>
+                    <font color="#ff9933">{this.state.title}</font>
+                </h2>
+                <marquee><font color='white'>{this.state.comment}</font></marquee>
             </div>
         );
     }
