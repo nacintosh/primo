@@ -51,7 +51,7 @@ class YouTube extends React.Component {
 
     getUrlForComments(player) {
         const videoid = player.getPlaylist()[player.getPlaylistIndex()];
-        return 'https://www.googleapis.com/youtube/v3/commentThreads?videoId=' + videoid + '&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&textFormat=plainText&part=snippet&maxResults=50&fields=items(snippet(topLevelComment(snippet(textDisplay))))'
+        return 'https://www.googleapis.com/youtube/v3/commentThreads?videoId=' + videoid + '&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&textFormat=plainText&part=snippet&maxResults=50&fields=items(snippet(topLevelComment(snippet(textDisplay))))&order=relevance'
     }
 
     onPlayerStateChange(event) {
@@ -71,11 +71,12 @@ class YouTube extends React.Component {
                     this.setState({title: json.items[0]['snippet']['title']
                     });
                 });
+
                 fetch(this.getUrlForComments(this.player)).then((response) => {
                     return response.json();
                 }).then((json) => {
                     const comment = json.items.reduce((pre, cur) => {
-                        return pre + cur.snippet.topLevelComment.snippet.textDisplay;
+                        return pre + cur.snippet.topLevelComment.snippet.textDisplay + ' / ';
                     }, '');
                     this.setState({comment: comment});
                 });

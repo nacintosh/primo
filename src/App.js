@@ -8,8 +8,14 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playlist: this.createPlaylist()
+            playlist: this.createPlaylist(),
+            textValue: this.props.defaultText
         };
+
+        this.onClick = this.onClick.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
     };
 
     createPlaylist() {
@@ -27,15 +33,36 @@ class App extends Component {
                     <img src={logo} className='App-logo' alt='logo'/>
                     <h2>Welcome to Primo</h2>
                 </div>
-                <input type='text' ref='inputText' defaultValue='Please add a VideoID'/>
-                <button onClick={this.onChangeText}>add</button>
+                <input type='text' ref='inputText' value={this.state.textValue}
+                       onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} />
+                <button onClick={this.onClick}>add</button>
                 <YouTube className="App-youtube" ref='youtube' playlist={this.state.playlist}/>
-                <div className="App-youtube-mask" />
+                <div className="App-youtube-mask"/>
             </div>
         );
     };
 
-    onChangeText(e) {
+    onChange(e) {
+        this.setState({textValue: e.target.value});
+    }
+
+    onBlur(e) {
+        if (e.target.value === '') {
+          this.setState({textValue: this.props.defaultText});
+        } else {
+          this.setState({textValue: e.target.value});
+        }
+    }
+
+    onFocus(e) {
+        if(e.target.value === this.props.defaultText) {
+          this.setState({textValue: ''});
+        } else {
+          this.setState({textValue: e.target.value});
+        }
+    }
+
+    onClick(e) {
         const id = ReactDOM.findDOMNode(this.refs.inputText).value.trim();
         fetch('/register', {
             method: 'POST',
@@ -45,15 +72,18 @@ class App extends Component {
             },
             body: JSON.stringify({videoid: `${id}`})
         });
+        this.setState({textValue: ''});
     };
 }
 
 App.propTypes = {
-    videos: React.PropTypes.array.isRequired
+    videos: React.PropTypes.array.isRequired,
+    defaultText: React.PropTypes.string.isRequired
 };
 
 App.defaultProps = {
-    videos: []
+    videos: [],
+    defaultText: 'Please add a VideoID'
 };
 
 export default App;
