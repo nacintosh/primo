@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './YouTube.css';
+import { Button } from 'react-toolbox/lib/button';
 
 class YouTube extends React.Component {
 
@@ -7,8 +9,9 @@ class YouTube extends React.Component {
         super(props);
         this.state = {
             playerState: "INIT",
-            title: "",
-            comment: ""
+            title: '',
+            comment: '',
+            imgurl: ''
         };
 
         this.player;
@@ -46,7 +49,7 @@ class YouTube extends React.Component {
 
     getUrlForTitle(player) {
         const videoid = player.getPlaylist()[player.getPlaylistIndex()];
-        return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&fields=items(snippet(title))&part=snippet"
+        return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&fields=items(snippet(title,thumbnails))&part=snippet"
     }
 
     getUrlForComments(player) {
@@ -68,8 +71,8 @@ class YouTube extends React.Component {
                 fetch(this.getUrlForTitle(this.player)).then((response) => {
                     return response.json();
                 }).then((json) => {
-                    this.setState({title: json.items[0]['snippet']['title']
-                    });
+                    this.setState({title: json.items[0]['snippet']['title']});
+                    this.setState({imgurl: json.items[0]['snippet']['thumbnails']['medium']['url']});
                 });
 
                 fetch(this.getUrlForComments(this.player)).then((response) => {
@@ -133,13 +136,15 @@ class YouTube extends React.Component {
         return (
             <div>
                 <div className={this.props.className} ref="player"></div>
-                <button onClick={this.onPrev}>prev</button>
-                <button onClick={this.onToggle}>{this.state.playerState}</button>
-                <button onClick={this.onNext}>next</button>
-                <h2>
-                    <font color="#ff9933">{this.state.title}</font>
-                </h2>
+                <p className='thumbnail-crop'>
+                  <img className='thumbnail' src={this.state.imgurl} />
+                </p>
+                <div className='title'><font color="#ff9933">{this.state.title}</font></div>
                 <marquee><font color='white'>{this.state.comment}</font></marquee>
+                <button onClick={this.onPrev}>prev</button>
+                <button className='play' onClick={this.onToggle}>{this.state.playerState}</button>
+                <button onClick={this.onNext}>next</button>
+                <Button label="Hello World!" />
             </div>
         );
     }
