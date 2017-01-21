@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './YouTube.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import 'whatwg-fetch';
 
 const style = {
   margin: 12,
