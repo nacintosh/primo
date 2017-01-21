@@ -35,7 +35,7 @@ class App extends Component {
             <div className='App'>
                 <div className='App-header'>
                     <img src={logo} className='App-logo' alt='logo'/>
-                    <h2>Welcome to Primo</h2>
+                    <h2>Primo for Music Lovers</h2>
                 </div>
                 <TextField ref='inputText' hintText={this.props.defaultText} floatingLabelText="VideoID"/>
                 <FlatButton label="ADD" onClick={this.onClick} />
