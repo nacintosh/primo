@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './YouTube.css';
-import { Button } from 'react-toolbox/lib/button';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+const style = {
+  margin: 12,
+};
 
 class YouTube extends React.Component {
 
@@ -140,11 +145,10 @@ class YouTube extends React.Component {
                   <img className='thumbnail' src={this.state.imgurl} />
                 </p>
                 <div className='title'><font color="#ff9933">{this.state.title}</font></div>
-                <marquee><font color='white'>{this.state.comment}</font></marquee>
-                <button onClick={this.onPrev}>prev</button>
-                <button className='play' onClick={this.onToggle}>{this.state.playerState}</button>
-                <button onClick={this.onNext}>next</button>
-                <Button label="Hello World!" />
+                <h3><marquee><font color='white'>{this.state.comment}</font></marquee></h3>
+                <RaisedButton label='prev' onClick={this.onPrev} />
+                <RaisedButton label={this.state.playerState} style={style} onClick={this.onToggle} />
+                <RaisedButton label='next' onClick={this.onNext} />
             </div>
         );
     }

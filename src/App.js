@@ -1,21 +1,24 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import logo from './logo.svg';
 import './App.css';
 import YouTube from './components/YouTube'
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             playlist: this.createPlaylist(),
-            textValue: this.props.defaultText
         };
-
         this.onClick = this.onClick.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.onFocus = this.onFocus.bind(this);
-        this.onBlur = this.onBlur.bind(this);
     };
 
     createPlaylist() {
@@ -28,42 +31,23 @@ class App extends Component {
 
     render() {
         return (
+          <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <div className='App'>
                 <div className='App-header'>
                     <img src={logo} className='App-logo' alt='logo'/>
                     <h2>Welcome to Primo</h2>
                 </div>
-                <input type='text' ref='inputText' value={this.state.textValue}
-                       onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} />
-                <button onClick={this.onClick}>add</button>
+                <TextField ref='inputText' hintText={this.props.defaultText} floatingLabelText="VideoID"/>
+                <FlatButton label="ADD" onClick={this.onClick} />
                 <YouTube className="App-youtube" ref='youtube' playlist={this.state.playlist}/>
-                <div className="App-youtube-mask"/>
+                <div className="App-youtube-mask" />
             </div>
+          </MuiThemeProvider>
         );
     };
 
-    onChange(e) {
-        this.setState({textValue: e.target.value});
-    }
-
-    onBlur(e) {
-        if (e.target.value === '') {
-          this.setState({textValue: this.props.defaultText});
-        } else {
-          this.setState({textValue: e.target.value});
-        }
-    }
-
-    onFocus(e) {
-        if(e.target.value === this.props.defaultText) {
-          this.setState({textValue: ''});
-        } else {
-          this.setState({textValue: e.target.value});
-        }
-    }
-
     onClick(e) {
-        const id = ReactDOM.findDOMNode(this.refs.inputText).value.trim();
+        const id = this.refs.inputText.getValue().trim();
         fetch('/register', {
             method: 'POST',
             headers: {
@@ -72,7 +56,8 @@ class App extends Component {
             },
             body: JSON.stringify({videoid: `${id}`})
         });
-        this.setState({textValue: ''});
+        this.refs.inputText.input.value = null;
+        this.refs.inputText.setState({ value: null})
     };
 }
 
