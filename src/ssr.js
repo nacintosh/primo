@@ -20,7 +20,7 @@ function renderFullPage(renderedContent, initialProps) {
                 <script>
                   var APP_PROPS=${appProps};
                 </script>
-                <script type="text/javascript" src="js/bundle.js" charset="utf-8"></script>
+                <script type="text/javascript" src="https://storage.googleapis.com/primo_js/bundle.js" charset="utf-8"></script>
             </body>
         </html>
     `;

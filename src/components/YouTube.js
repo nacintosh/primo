@@ -55,12 +55,12 @@ class YouTube extends React.Component {
 
     getUrlForTitle(player) {
         const videoid = player.getPlaylist()[player.getPlaylistIndex()];
-        return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&fields=items(snippet(title,thumbnails))&part=snippet"
+        return "https://www.googleapis.com/youtube/v3/videos?id=" + videoid + "&key=AIzaSyCNC4uC5tD-1o7S_E_OG1F3N-htbgYUukc&fields=items(snippet(title,thumbnails))&part=snippet"
     }
 
     getUrlForComments(player) {
         const videoid = player.getPlaylist()[player.getPlaylistIndex()];
-        return 'https://www.googleapis.com/youtube/v3/commentThreads?videoId=' + videoid + '&key=AIzaSyDjEi1e72nUfBoef6yEOnFEwW3aKU9HdV4&textFormat=plainText&part=snippet&maxResults=50&fields=items(snippet(topLevelComment(snippet(textDisplay))))&order=relevance'
+        return 'https://www.googleapis.com/youtube/v3/commentThreads?videoId=' + videoid + '&key=AIzaSyCNC4uC5tD-1o7S_E_OG1F3N-htbgYUukc&textFormat=plainText&part=snippet&maxResults=50&fields=items(snippet(topLevelComment(snippet(textDisplay))))&order=relevance'
     }
 
     onPlayerStateChange(event) {
