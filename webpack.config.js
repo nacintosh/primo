@@ -1,5 +1,6 @@
 var path = require('path');
-var assetsPath = path.join(__dirname, 'public', 'js');
+var bundleOutputPath = path.join(__dirname, 'public', 'storage');
+var ssrOutputPath = path.join(__dirname, 'public', 'functions', 'listen');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = [{
@@ -8,7 +9,7 @@ module.exports = [{
     devtool: 'eval',
     entry: './index.js',
     output: {
-        path: assetsPath,
+        path: bundleOutputPath,
         filename: 'bundle.js'
     },
     module: {
@@ -37,9 +38,8 @@ module.exports = [{
     entry: './ssr.js',
     target: 'node',
     output: {
-        path: assetsPath,
+        path: ssrOutputPath,
         filename: 'ssr.js',
-        publicPath: 'public',
         libraryTarget: 'commonjs2'
     },
     module: {

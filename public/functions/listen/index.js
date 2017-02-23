@@ -4,7 +4,7 @@
  * @param {Object} req Cloud Function request context.
  * @param {Object} res Cloud Function response context.
  */
-const ssr = require('./public/js/ssr');
+const ssr = require('./ssr');
 const Datastore = require('@google-cloud/datastore');
 const datastore = Datastore({
     projectId: 'primo-159514'
