@@ -48,7 +48,7 @@ class App extends Component {
 
     onClick(e) {
         const id = this.refs.inputText.getValue().trim();
-        fetch('/register', {
+        fetch('https://us-central1-primo-159514.cloudfunctions.net/register', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

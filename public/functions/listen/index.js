@@ -7,16 +7,15 @@
 const ssr = require('./ssr');
 const Datastore = require('@google-cloud/datastore');
 const datastore = Datastore({
-    projectId: 'primo-159514'
+  projectId: 'primo-159514'
 });
 
-const query = datastore.createQuery('YouTube')
-    .order('created', {
-        descending: true
-    });
+const query = datastore.createQuery('YouTube').order('created', {
+  descending: true
+});
 
-exports.listen = function helloGET (req, res) {
+exports.listen = function listen(req, res) {
   datastore.runQuery(query, (err, entities) => {
-      ssr.default(req, res, entities);
+    ssr.default(req, res, entities);
   });
 };
