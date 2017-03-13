@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "deploy": "gcloud alpha functions deploy register --stage-bucket primo-functions --trigger-http --include-node-modules"
+    "deploy": "gcloud alpha functions deploy register --stage-bucket primo-functions --trigger-http --include-ignored-files"
   },
   "dependencies": {
     "@google-cloud/datastore": "^0.6.0"

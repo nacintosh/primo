@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "deploy": "gcloud alpha functions deploy listen --stage-bucket primo-functions --trigger-http --include-node-modules"
+    "deploy": "gcloud alpha functions deploy listen --stage-bucket primo-functions --trigger-http --include-ignored-files"
   },
   "dependencies": {
-    "@google-cloud/datastore": "^0.6.0"
+    "@google-cloud/datastore": "^0.6.0",
+    "@slack/client": "^3.8.1"
   }
 }
